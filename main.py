@@ -8,8 +8,7 @@ from aiohttp import web
 
 logging.basicConfig(level=logging.INFO)
 
-TOKEN = "8512153775:AAHJ-pYc7Iy-oyK_3bW2_GLaHb6RBxuNbZ0"
-
+TOKEN = os.getenv("TOKEN")
 bot = Bot(token=TOKEN)
 dp = Dispatcher()
 
@@ -31,8 +30,7 @@ async def download_video(message: types.Message):
         'format': 'mp4/best',
         'outtmpl': output_file,
         'max_filesize': 50 * 1024 * 1024,
-            extractor_args: {'youtube': {'player_client': ['android', 'web']}},
-        
+        'extractor_args': {'youtube': {'player_client': ['android', 'web']}},
     }
 
     try:
@@ -43,34 +41,17 @@ async def download_video(message: types.Message):
         await asyncio.to_thread(download)
 
         if os.path.exists(output_file):
-            await message.answer_video(types.FSInputFile(output_file))
+            video_file = types.FSInputFile(output_file)
+            await message.answer_video(video_file)
             os.remove(output_file)
         else:
             await message.answer("❌ Не удалось найти скачанный файл.")
-
     except Exception as e:
-        await message.answer(f"❌ Произошла ошибка:\n{str(e)}")
+        await message.answer(f"❌ Произошла ошибка при скачивании: {e}")
         if os.path.exists(output_file):
             os.remove(output_file)
 
-# Веб-сервер для Render с быстрым ответом
-async def handle(request):
-    return web.Response(text="Bot is alive!")
-
-async def web_server():
-    app = web.Application()
-    app.router.add_get("/", handle)
-    runner = web.AppRunner(app)
-    await runner.setup()
-    port = int(os.environ.get("PORT", 10000))
-    site = web.TCPSite(runner, "0.0.0.0", port)
-    await site.start()
-    print(f"Web server started on port {port}")
-
 async def main():
-    # Запускаем веб-сервер и бота одновременно
-    await web_server()
-    print("Бот успешно запущен!")
     await dp.start_polling(bot)
 
 if __name__ == "__main__":
