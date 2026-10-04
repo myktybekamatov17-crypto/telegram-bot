@@ -31,6 +31,8 @@ async def download_video(message: types.Message):
         'format': 'mp4/best',
         'outtmpl': output_file,
         'max_filesize': 50 * 1024 * 1024,
+            extractor_args: {'youtube': {'player_client': ['android', 'web']}},
+        
     }
 
     try:
