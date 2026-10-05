@@ -22,8 +22,8 @@ def run_server():
 
 threading.Thread(target=run_server, daemon=True).start()
 
-# Токенди Render'деги Environment Variables'дан алат
-TOKEN = os.getenv("TOKEN")
+# Токен түздөн-түз кодго жазылды, эч кандай кошумча настройка керек эмес
+TOKEN = "8512153775:AAHW2uMmbxULmhRK8D7byWa00yJ1G8kJ7Bo"
 
 bot = Bot(token=TOKEN)
 dp = Dispatcher()
