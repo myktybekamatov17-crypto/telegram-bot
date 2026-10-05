@@ -4,7 +4,7 @@ from aiogram.types import Message
 from aiogram.filters import Command
 import yt_dlp
 
-TOKEN = "8512153775:AAHJ-pYc7Iy-oyK_3bW2_GLaHb6RBXunBZ0"
+TOKEN = "8512153775:AAHW2uMmbxULmhRK8D7byWa00yJ1G8kJ7Bo"
 
 bot = Bot(token=TOKEN)
 dp = Dispatcher()
