@@ -2,6 +2,7 @@ import os
 from aiogram import Bot, Dispatcher, F
 from aiogram.types import Message
 from aiogram.filters import Command
+from aiogram.enums import ParseMode
 import yt_dlp
 
 TOKEN = "8512153775:AAHW2uMmbxULmhRK8D7byWa00yJ1G8kJ7Bo"
@@ -17,12 +18,12 @@ async def cmd_start(message: Message):
         "📥 <b>Просто отправь мне ссылку на любое видео или Shorts, а я сделаю всё остальное!</b> 🚀\n\n"
         "💎 <i>Быстро, удобно и прямо здесь!</i> ✨"
     )
-    await message.answer(text, parse_html="HTML")
+    await message.answer(text, parse_mode=ParseMode.HTML)
 
 @dp.message(F.text.contains("youtube.com") | F.text.contains("youtu.be"))
 async def download_video(message: Message):
     url = message.text.strip()
-    wait_msg = await message.answer("⏳ <i>Подожди немного, магия уже началась... Скачиваю видео 📥...</i>", parse_html="HTML")
+    wait_msg = await message.answer("⏳ <i>Подожди немного, магия уже началась... Скачиваю видео 📥...</i>", parse_mode=ParseMode.HTML)
 
     ydl_opts = {
         'format': 'best',
@@ -40,7 +41,8 @@ async def download_video(message: Message):
         file_to_send = FSInputFile(filename)
         await message.answer_video(
             file_to_send, 
-            caption="🎉 <b>Готово! Твое видео успешно скачано!</b> 🌟\n✨ <i>Приятного просмотра!</i> 🍿"
+            caption="🎉 <b>Готово! Твое видео успешно скачано!</b> 🌟\n✨ <i>Приятного просмотра!</i> 🍿",
+            parse_mode=ParseMode.HTML
         )
         
         if os.path.exists(filename):
@@ -53,7 +55,7 @@ async def download_video(message: Message):
             f"❌ <b>Упс! Произошла ошибка при скачивании:</b>\n"
             f"<code>{str(e)}</code>\n\n"
             f"💡 <i>Попробуй отправить другую ссылку!</i> ✨",
-            parse_html="HTML"
+            parse_mode=ParseMode.HTML
         )
         try:
             await bot.delete_message(chat_id=message.chat.id, message_id=wait_msg.message_id)
@@ -65,7 +67,7 @@ async def echo_handler(message: Message):
     await message.answer(
         "🤖 <b>Я жду твою ссылку!</b>\n"
         "🎵 <i>Отправь мне ссылку на YouTube-видео или Shorts, чтобы начать загрузку!</i> 🚀",
-        parse_html="HTML"
+        parse_mode=ParseMode.HTML
     )
 
 async def main():
