@@ -23,7 +23,7 @@ def run_web_server():
 
 threading.Thread(target=run_web_server, daemon=True).start()
 
-TOKEN = "8512153775:AAHJ-pYc7Iy-oyK_3bW2_GLaHb6RBXunBZ0"
+TOKEN = "8512153775:AAHJ-pYc7Iy-oyK_3bW2_GLaHb6RBxuNbZ0"
 
 bot = Bot(token=TOKEN)
 dp = Dispatcher()
