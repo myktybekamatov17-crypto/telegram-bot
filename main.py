@@ -22,7 +22,7 @@ def run_web_server():
 threading.Thread(target=run_web_server, daemon=True).start()
 
 # Тектирүүчү токен (өзүңүздүн бот токениңиз)
-TOKEN = "8512153775:AAHS... (өз токениңизди жазыңыз)" 
+TOKEN = "8512153775:AAHJ-pYc7Iy-oyK_3bW2_GLaHb6RBxuNbZ0" 
 # Эскертүү: Токениңизді өзүңүздүн иштеп жаткан токениңизге алмаштырыңыз же мурунку коддогудай калтырыңыз.
 
 bot = Bot(token=TOKEN)
