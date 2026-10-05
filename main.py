@@ -44,11 +44,15 @@ async def download_video(message: Message):
     wait_msg = await message.answer("⏳ <i>Подожди немного, магия уже началась... Скачиваю видео 📥...</i>", parse_mode=ParseMode.HTML)
 
     ydl_opts = {
-        'format': 'best',
-        'outtmpl': 'video.%(ext)s',
-        'max_filesize': 50 * 1024 * 1024,
-        'extractor_args': {'youtube': {'player_client': ['android', 'web']}},
+    'format': 'best',
+    'noplaylist': True,
+    'extractor_args': {
+        'youtube': {
+            'player_client': ['android', 'web']
+        }
     }
+    }
+    
 
     try:
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
