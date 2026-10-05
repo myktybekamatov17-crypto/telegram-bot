@@ -23,7 +23,7 @@ def run_server():
 threading.Thread(target=run_server, daemon=True).start()
 
 # Токен түздөн-түз кодго жазылды, эч кандай кошумча настройка керек эмес
-TOKEN = "8512153775:AAHW2uMmbxULmhRK8D7byWa00yJ1G8kJ7Bo"
+TOKEN = "8512153775:AAEYEpsFvQuN3KM-MrvIW_TttYYqusd8G9g"
 
 bot = Bot(token=TOKEN)
 dp = Dispatcher()
