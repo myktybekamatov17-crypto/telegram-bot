@@ -1,18 +1,15 @@
 import os
 import asyncio
-import logging
-from aiogram import Bot, Dispatcher, types, F
-from aiogram.filters import CommandStart
+from aiogram import Bot, Dispatcher, F, types
 from yt_dlp import YoutubeDL
-from aiohttp import web
 
-logging.basicConfig(level=logging.INFO)
+# Ботуңуздун токенин бул жерге жазасыз же переменнаядан аласыз
+TOKEN = os.getenv("BOT_TOKEN")
 
-TOKEN = os.getenv("TOKEN")
 bot = Bot(token=TOKEN)
 dp = Dispatcher()
 
-@dp.message(CommandStart())
+@dp.message(F.text.startswith("/start"))
 async def start_cmd(message: types.Message):
     await message.answer(
         "Привет! 👋\n\n"
@@ -26,14 +23,14 @@ async def download_video(message: types.Message):
     await message.answer("⏳ Скачиваю видео, подождите немного...")
 
     output_file = "video.mp4"
-        ydl_opts = {
+    ydl_opts = {
         'format': 'mp4/best',
         'outtmpl': output_file,
         'max_filesize': 50 * 1024 * 1024,
-        'extractor_args': {'youtube': {'player_client': ['android', 'web']}},
+                'extractor_args': {'youtube': {'player_client': ['android', 'web']}},
+        
         'geo_bypass': True,
-        }
-
+    }
 
     try:
         def download():
