@@ -1,9 +1,27 @@
 import os
+import asyncio
+from http.server import HTTPServer, BaseHTTPRequestHandler
+import threading
 from aiogram import Bot, Dispatcher, F
 from aiogram.types import Message
 from aiogram.filters import Command
 from aiogram.enums import ParseMode
 import yt_dlp
+
+# Render порт талап кылбашы үчүн кичинекей веб-сервер
+class SimpleHandler(BaseHTTPRequestHandler):
+    def do_GET(self):
+        self.send_response(200)
+        self.end_headers()
+        self.wfile.write(b"Bot is alive!")
+
+def run_server():
+    port = int(os.environ.get("PORT", 10000))
+    server = HTTPServer(("0.0.0.0", port), SimpleHandler)
+    server.serve_forever()
+
+# Веб-серверди өзүнчө агымда (поток) ишке киргизебиз
+threading.Thread(target=run_server, daemon=True).start()
 
 TOKEN = "8512153775:AAHW2uMmbxULmhRK8D7byWa00yJ1G8kJ7Bo"
 
@@ -74,6 +92,5 @@ async def main():
     await dp.start_polling(bot)
 
 if __name__ == "__main__":
-    import asyncio
     asyncio.run(main())
     
