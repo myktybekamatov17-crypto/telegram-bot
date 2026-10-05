@@ -23,7 +23,7 @@ def run_web_server():
 
 threading.Thread(target=run_web_server, daemon=True).start()
 
-TOKEN = "8512153775:AAHJ-pYc7Iy-oyK_3bW2_GLaHb6RBxuNbZ0"
+TOKEN = "8512153775:AAHJ-pYc7Iy-oyK_3bW2_GLaHb6RBXunBZ0"
 
 bot = Bot(token=TOKEN)
 dp = Dispatcher()
@@ -31,16 +31,16 @@ dp = Dispatcher()
 @dp.message(Command("start"))
 async def cmd_start(message: Message):
     text = (
-        "👋 Привет! Добро пожаловать!\n\n"
-        "🎬 Я бот для скачивания музыки и видео из YouTube.\n"
-        "📥 Просто отправь мне ссылку на видео или шортс, а я скачаю его для тебя! 🚀"
+        "👋 Салам! Кош келиңиз!\n\n"
+        "🎬 Мен YouTube'дан музыка жана видео көчүрүүчү ботмун.\n"
+        "📥 Мага видеонун же шортстун шилтемесин жибериңиз, мен аны сиз үчүн көчүрүп берем! 🚀"
     )
     await message.answer(text)
 
 @dp.message(F.text.contains("youtube.com") | F.text.contains("youtu.be"))
 async def download_video(message: Message):
     url = message.text.strip()
-    wait_msg = await message.answer("⏳ Пожалуйста, подожди... Скачиваю видео 📥...")
+    wait_msg = await message.answer("⏳ Сураныч, күтүп туруңуз... Видеону көчүрүп жатам 📥...")
 
     ydl_opts = {
         'format': 'best',
@@ -56,7 +56,7 @@ async def download_video(message: Message):
 
         from aiogram.types import FSInputFile
         file_to_send = FSInputFile(filename)
-        await message.answer_video(file_to_send, caption="✅ Вот твое видео! Приятного просмотра! 🎉")
+        await message.answer_video(file_to_send, caption="✅ Мына сиздин видео! Жакшы көрүңүз! 🎉")
         
         if os.path.exists(filename):
             os.remove(filename)
@@ -64,7 +64,7 @@ async def download_video(message: Message):
         await bot.delete_message(chat_id=message.chat.id, message_id=wait_msg.message_id)
 
     except Exception as e:
-        await message.answer(f"❌ Ошибка при скачивании:\n{str(e)}\n\n💡 Попробуй другую ссылку!")
+        await message.answer(f"❌ Көчүрүү учурунда ката кетти:\n{str(e)}\n\n💡 Башка шилтеме сынап көрүңүз!")
         try:
             await bot.delete_message(chat_id=message.chat.id, message_id=wait_msg.message_id)
         except:
@@ -72,7 +72,7 @@ async def download_video(message: Message):
 
 @dp.message()
 async def echo_handler(message: Message):
-    await message.answer("🤖 Отправь мне ссылку на YouTube-видео, чтобы я мог скачать его для тебя! 🎵🎥")
+    await message.answer("🤖 Видеону көчүрүү үчүн мага YouTube шилтемесин жибериңиз! 🎵🎥")
 
 async def main():
     await dp.start_polling(bot)
