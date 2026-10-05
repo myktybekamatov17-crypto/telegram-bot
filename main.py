@@ -44,11 +44,13 @@ async def download_video(message: Message):
     url = message.text.strip()
     wait_msg = await message.answer("⏳ Пожалуйста, подожди... Скачиваю видео 📥...")
 
-    ydl_opts = {
+        ydl_opts = {
         'format': 'best',
         'outtmpl': 'video.%(ext)s',
-        'max_filesize': 50 * 1024 * 1024, # Telegram чектөөсү үчүн (50МБ)
-    }
+        'max_filesize': 50 * 1024 * 1024,
+        'extractor_args': {'youtube': {'player_client': ['android', 'web']}},
+        }
+
 
     try:
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
