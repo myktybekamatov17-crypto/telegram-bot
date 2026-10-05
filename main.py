@@ -8,7 +8,7 @@ from aiogram.filters import Command
 from aiogram.enums import ParseMode
 import yt_dlp
 
-# Render порт талап кылбашы үчүн кичинекей веб-сервер
+# Render веб-сервер талап кылгандыктан, фондо кичинекей сервер иштетебиз
 class SimpleHandler(BaseHTTPRequestHandler):
     def do_GET(self):
         self.send_response(200)
@@ -20,10 +20,10 @@ def run_server():
     server = HTTPServer(("0.0.0.0", port), SimpleHandler)
     server.serve_forever()
 
-# Веб-серверди өзүнчө агымда (поток) ишке киргизебиз
 threading.Thread(target=run_server, daemon=True).start()
 
-TOKEN = "8512153775:AAHW2uMmbxULmhRK8D7byWa00yJ1G8kJ7Bo"
+# Токенди Render'деги Environment Variables'дан алат
+TOKEN = os.getenv("TOKEN")
 
 bot = Bot(token=TOKEN)
 dp = Dispatcher()
