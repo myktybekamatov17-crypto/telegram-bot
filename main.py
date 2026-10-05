@@ -6,7 +6,6 @@ from aiogram.types import Message
 from aiogram.filters import Command
 import yt_dlp
 
-# Render порт талабын аткаруу үчүн жөнөкөй веб-сервер
 class SimpleHandler(BaseHTTPRequestHandler):
     def do_GET(self):
         self.send_response(200)
@@ -18,17 +17,13 @@ def run_web_server():
     server = HTTPServer(("0.0.0.0", port), SimpleHandler)
     server.serve_forever()
 
-# Веб-серверди өзүнчө агымда (thread) кошобуз
 threading.Thread(target=run_web_server, daemon=True).start()
 
-# Тектирүүчү токен (өзүңүздүн бот токениңиз)
-TOKEN = "8512153775:AAHJ-pYc7Iy-oyK_3bW2_GLaHb6RBxuNbZ0" 
-# Эскертүү: Токениңизді өзүңүздүн иштеп жаткан токениңизге алмаштырыңыз же мурунку коддогудай калтырыңыз.
+TOKEN = "8512153775:AAHJ-pYc7Iy-oyK_3bW2_GLaHb6RBXunBZ0"
 
 bot = Bot(token=TOKEN)
 dp = Dispatcher()
 
-# /start буйругуна орусча жана смайликтер менен жооп берүү
 @dp.message(Command("start"))
 async def cmd_start(message: Message):
     text = (
@@ -38,31 +33,27 @@ async def cmd_start(message: Message):
     )
     await message.answer(text)
 
-# YouTube шилтемелерин кармап алып скачать этүү
 @dp.message(F.text.contains("youtube.com") | F.text.contains("youtu.be"))
 async def download_video(message: Message):
     url = message.text.strip()
     wait_msg = await message.answer("⏳ Пожалуйста, подожди... Скачиваю видео 📥...")
 
-        ydl_opts = {
+    ydl_opts = {
         'format': 'best',
         'outtmpl': 'video.%(ext)s',
         'max_filesize': 50 * 1024 * 1024,
         'extractor_args': {'youtube': {'player_client': ['android', 'web']}},
-        }
-
+    }
 
     try:
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             info = ydl.extract_info(url, download=True)
             filename = ydl.prepare_filename(info)
 
-        # Видео файлды Telegram аркылуу жиберүү
         from aiogram.types import FSInputFile
         file_to_send = FSInputFile(filename)
         await message.answer_video(file_to_send, caption="✅ Вот твое видео! Приятного просмотра! 🎉")
         
-        # Жүктөлүп бүткөн соң серверден файлды өчүрүү
         if os.path.exists(filename):
             os.remove(filename)
             
@@ -75,7 +66,6 @@ async def download_video(message: Message):
         except:
             pass
 
-# Калган тексттерге жооп
 @dp.message()
 async def echo_handler(message: Message):
     await message.answer("🤖 Отправь мне ссылку на YouTube-видео, чтобы я мог скачать его для тебя! 🎵🎥")
