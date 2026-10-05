@@ -26,12 +26,14 @@ async def download_video(message: types.Message):
     await message.answer("⏳ Скачиваю видео, подождите немного...")
 
     output_file = "video.mp4"
-    ydl_opts = {
+        ydl_opts = {
         'format': 'mp4/best',
         'outtmpl': output_file,
         'max_filesize': 50 * 1024 * 1024,
         'extractor_args': {'youtube': {'player_client': ['android', 'web']}},
-    }
+        'geo_bypass': True,
+        }
+
 
     try:
         def download():
